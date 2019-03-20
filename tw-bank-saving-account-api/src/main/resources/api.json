@@ -1,0 +1,382 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "0.1.0",
+    "title": "Pawan Thoughtworks Bank",
+    "description": "Pawan Thoughtworks Bank APIs"
+  },
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/saving-account": {
+      "x-summary": "Account create operation",
+      "x-description": "Create Account POST operation",
+      "post": {
+        "summary": "create new account",
+        "description": "create new account",
+        "operationId": "createAccount",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Account"
+            },
+            "examples": {
+              "application/json": {
+                "balance": "123.45",
+                "currency": "USD"
+              },
+              "timestamp": "2017-07-21T17:32:28Z"
+            }
+          },
+          "default": {
+            "description": "Bad request"
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "required": true,
+            "name": "accountRequest",
+            "schema": {
+              "$ref": "#/definitions/AccountRequest"
+            }
+          }
+        ]
+      }
+    },
+    "/saving-account/{accountId}/balance": {
+      "x-summary": "Account balance operation",
+      "x-description": "Account GET balance operation",
+      "get": {
+        "summary": "Get the balance in account",
+        "description": "Get the balance in account",
+        "operationId": "getBalance",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "description": "Id of the account",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Balance"
+            },
+            "examples": {
+              "application/json": {
+                "amount": {
+                  "balance": "123.45,",
+                  "currency": "USD"
+                },
+                "timestamp": "2017-07-21T17:32:28Z"
+              }
+            }
+          },
+          "default": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/saving-account/{accountId}/transactions": {
+      "x-summary": "Account transactions operation",
+      "x-description": "Account GET transactions operation",
+      "get": {
+        "summary": "Get the transactions on account",
+        "description": "Get the transactions on account",
+        "operationId": "getTransactions",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "description": "Id of the account",
+            "type": "string",
+            "x-example": "12345123"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Index of the first requested record",
+            "type": "integer",
+            "x-example": "14"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "maximum number of records requested",
+            "type": "integer",
+            "x-example": "100"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/Transactions"
+            },
+            "examples": {
+              "application/json": {
+                "transactions": [
+                  {
+                    "type": "DEPOSITE",
+                    "amount": {
+                      "value": 100.5,
+                      "currency": "USD"
+                    },
+                    "timestamp": "2017-07-21T17:32:28Z"
+                  },
+                  {
+                    "type": "WITHDRAW",
+                    "amount": {
+                      "value": 15,
+                      "currency": "USD"
+                    },
+                    "timestamp": "2017-08-21T17:32:28Z"
+                  }
+                ],
+                "totalRecords": 54
+              }
+            }
+          },
+          "default": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/saving-account/{accountId}/deposite": {
+      "x-summary": "Account deposite operation",
+      "x-description": "Account POST deposite operation",
+      "post": {
+        "summary": "Deposite the amount in account",
+        "description": "Deposite the amount in account",
+        "operationId": "deposite",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "description": "Id of the account",
+            "type": "string",
+            "x-example": "12345123"
+          },
+          {
+            "in": "body",
+            "required": true,
+            "name": "amount",
+            "schema": {
+              "$ref": "#/definitions/Amount"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/TransactionResponse"
+            },
+            "examples": {
+              "application/json": {
+                "balance": "123.45,",
+                "currency": "USD"
+              },
+              "timestamp": "2017-07-21T17:32:28Z"
+            }
+          },
+          "default": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/saving-account/{accountId}/withdraw": {
+      "x-summary": "Account withdraw operation",
+      "x-description": "Account POST withdraw operation",
+      "post": {
+        "summary": "Withdraw the amount in account",
+        "description": "Withdraw the amount in account",
+        "operationId": "withdraw",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "description": "Id of the account",
+            "type": "string",
+            "x-example": "12345123"
+          },
+          {
+            "in": "body",
+            "required": true,
+            "name": "amount",
+            "schema": {
+              "$ref": "#/definitions/Amount"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "$ref": "#/definitions/TransactionResponse"
+            },
+            "examples": {
+              "application/json": {
+                "balance": "123.45,",
+                "currency": "USD"
+              },
+              "timestamp": "2017-07-21T17:32:28Z"
+            }
+          },
+          "default": {
+            "description": "Bad request"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Amount": {
+      "required": [
+        "value",
+        "currency"
+      ],
+      "properties": {
+        "value": {
+          "type": "number",
+          "default": 0
+        },
+        "currency": {
+          "type": "string",
+          "default": "USD"
+        }
+      }
+    },
+    "Transaction": {
+      "required": [
+        "id",
+        "type",
+        "status",
+        "amount",
+        "transactionDate"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "DEPOSITE",
+            "WITHDRAW"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "PROCESSING",
+            "SUCCESSFUL",
+            "FAILED",
+            "CANCELLED"
+          ]
+        },
+        "reasonCode": {
+          "type": "string",
+          "enum": [
+            "INSUFFICIENT_BALANCE",
+            "CUSTOMER_REQUESTED",
+            "ACCOUNT_BLOCKED"
+          ]
+        },
+        "amount": {
+          "$ref": "#/definitions/Amount"
+        },
+        "transactionDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Transactions": {
+      "required": [
+        "transactions",
+        "total"
+      ],
+      "properties": {
+        "transactions": {
+          "items": {
+            "$ref": "#/definitions/Transaction"
+          },
+          "type": "array"
+        },
+        "totalRecords": {
+          "type": "integer",
+          "default": "0"
+        }
+      }
+    },
+    "Balance": {
+      "required": [
+        "amount",
+        "timestamp"
+      ],
+      "properties": {
+        "amount": {
+          "$ref": "#/definitions/Amount"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Account": {
+      "required": [
+        "id",
+        "balance",
+        "creationDate"
+      ],
+      "properties": {
+        "balance": {
+          "$ref": "#/definitions/Balance"
+        },
+        "id": {
+          "type": "string"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "AccountRequest": {
+      "required": [
+        "currency"
+      ],
+      "properties": {
+        "currency": {
+          "type": "string",
+          "default": "USD"
+        }
+      }
+    },
+    "TransactionResponse": {
+      "required": [
+        "balance",
+        "transaction"
+      ],
+      "properties": {
+        "balance": {
+          "$ref": "#/definitions/Balance"
+        },
+        "transaction": {
+          "$ref": "#/definitions/Transaction"
+        }
+      }
+    }
+  }
+}

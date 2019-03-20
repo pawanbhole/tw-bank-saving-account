@@ -1,0 +1,51 @@
+swagger: "2.0"
+info:
+  version: 0.1.0
+  title: Pawan Thoughtworks Bank
+  description: Pawan Thoughtworks Bank APIs
+tags:
+  - ptw
+basePath: /api
+schemes: [http]
+paths:
+  /balance/{accountId}:
+    x-summary: Account balance operation
+    x-description: Account GET balance operatio
+    get:
+      summary: Get the balance in account
+      description: Get the balance in account
+      operationId: getBalance
+      parameters:
+        - name: accountId
+          in: query
+          description: Id of the account
+          type: string
+          x-example: '12345123'
+      responses:
+        default:
+          description: Bad request
+        200:
+          description: Successful response
+          schema:
+            $ref: '#/definitions/Balance'
+          examples:
+            'application/json':
+              balance: 123.45,
+              currency: 'USD'
+definitions:
+  Balance:
+    required:
+      - balance
+      - currency
+      - timestamp
+    properties:
+      balance:
+        type: number
+        default: 100.50
+      currency:
+        type: string
+        default: 'USD'
+      timestamp:
+        type: string
+        default: '2017-07-21T17:32:28Z'
+        format: date-time
