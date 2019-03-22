@@ -19,6 +19,7 @@ public class LockManagerImpl implements LockManager{
 	
 	@Override
 	public synchronized Lock readLock(String key) {
+		//as the method is synchronized only one thread can create a lock and update a map at a time
 		ReentrantReadWriteLock reentrantReadWriteLock = lockMap.get(key);
 		if(reentrantReadWriteLock == null) {
 			reentrantReadWriteLock = new ReentrantReadWriteLock();

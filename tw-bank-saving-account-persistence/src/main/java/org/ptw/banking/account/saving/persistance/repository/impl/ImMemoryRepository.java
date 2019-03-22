@@ -11,6 +11,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 
+/**
+ * @author pawan
+ * Implementation for Repository which maintains the data in-memory
+ * @param <K> Key
+ * @param <V> Item
+ */
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ImMemoryRepository<K, V> implements Repository<K, V>{

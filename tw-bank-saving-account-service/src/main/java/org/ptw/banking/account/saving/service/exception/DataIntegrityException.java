@@ -1,5 +1,10 @@
 package org.ptw.banking.account.saving.service.exception;
 
+/**
+ * Exception if data not in sync. E.g. if balance is not in sync with transactions.
+ * @author pawan
+ *
+ */
 public class DataIntegrityException extends RuntimeException {
 	/**
 	 * 

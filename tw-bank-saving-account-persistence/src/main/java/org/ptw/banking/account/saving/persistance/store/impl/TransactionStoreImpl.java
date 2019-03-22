@@ -11,6 +11,12 @@ import org.ptw.banking.account.saving.persistance.repository.Repository;
 import org.ptw.banking.account.saving.persistance.store.TransactionStore;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
+/**
+ * Implementation for transaction store.
+ * @author pawan
+ *
+ */
 @org.springframework.stereotype.Repository
 public class TransactionStoreImpl extends AbstractStore implements TransactionStore {
 

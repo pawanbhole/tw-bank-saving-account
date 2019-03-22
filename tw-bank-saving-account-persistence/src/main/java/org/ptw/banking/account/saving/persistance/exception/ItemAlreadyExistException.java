@@ -1,5 +1,8 @@
 package org.ptw.banking.account.saving.persistance.exception;
 
+/*
+ * Exception for Item already exist in store.  
+ */
 public class ItemAlreadyExistException extends StoreException {
 	/**
 	 * 

@@ -13,10 +13,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+/**
+ * Exception handler for Saving Account API.
+ * @author pawan
+ *
+ */
 @RestControllerAdvice
 public class ApiExceptionHandler implements SavingAccountApi {
 
-	  @ExceptionHandler({ApplicationException.class, Exception.class, DataIntegrityException.class})
+	@ExceptionHandler({ApplicationException.class, Exception.class, DataIntegrityException.class})
 	  public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex, WebRequest request) {
 	    ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
 	        request.getDescription(false));

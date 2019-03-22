@@ -32,17 +32,28 @@ public class CreateAccountServiceImpl implements CreateAccountService {
 		Lock accountLock = lockManager.writeLock(accountId);
 		try {
 			accountLock.lock();
-			AccountDTO accountDTO = new AccountDTO();
-			AmountDTO amount = new AmountDTO();
-			amount.setValue(0);
-			accountDTO.setCurrency(Currency.getInstance(accountRequest.getCurrency()));
-			accountDTO.setBalance(amount);
-			accountDTO.setId(accountId);
-			accountDTO.setCreationDate(OffsetDateTime.now());
+			AccountDTO accountDTO = createAccountDTO(accountId, accountRequest);
 			accountStore.createAccount(accountDTO);
 			return accountMapper.map(accountDTO);
 		} finally {
 			accountLock.unlock();
 		}
+	}
+	
+	/**
+	 * Creates the new TranAccountDTOsactionDTO based on accountId and accountRequest
+	 * @param amount
+	 * @param type
+	 * @return
+	 */
+	protected AccountDTO createAccountDTO(String accountId, AccountRequest accountRequest) {
+		AccountDTO accountDTO = new AccountDTO();
+		AmountDTO amount = new AmountDTO();
+		amount.setValue(0);
+		accountDTO.setCurrency(Currency.getInstance(accountRequest.getCurrency()));
+		accountDTO.setBalance(amount);
+		accountDTO.setId(accountId);
+		accountDTO.setCreationDate(OffsetDateTime.now());
+		return accountDTO;
 	}
 }

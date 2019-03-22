@@ -1,5 +1,8 @@
 package org.ptw.banking.account.saving.persistance.exception;
 
+/*
+ * Exception for Item not found in store.  
+ */
 public class ItemNotFoundException extends StoreException {
 	/**
 	 * 

@@ -10,6 +10,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 
+/**
+ * Mapper implementation for TransactionMapper. This class dont map currency as it is not available in DTO.
+ * @author pawan
+ *
+ */
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class TransactionMapperImpl implements TransactionMapper {

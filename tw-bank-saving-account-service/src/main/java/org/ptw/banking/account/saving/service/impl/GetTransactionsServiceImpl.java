@@ -36,33 +36,46 @@ public class GetTransactionsServiceImpl implements GetTransactionsService {
 		Lock accountLock = lockManager.readLock(accountId);
 		try {
 			accountLock.lock();
-			Transactions transactions = new Transactions();
-			List<Transaction> transactionList = null;
-			AccountDTO accountDTO;
-			List<TransactionDTO> transactionDTOs;
-			accountDTO = accountStore.getAccount(accountId);
-			transactionDTOs = transactionStore.getTransactions(accountId);
-			int offset = (offsetParam != null) ? offsetParam : 0;
-			if(transactionDTOs != null && transactionDTOs.size() > offset) {
-				int limit = (limitParam != null) ? limitParam : (transactionDTOs.size() - offset);
-				transactionList = new ArrayList<Transaction>(limit);
-				String currency = accountDTO.getCurrency().getCurrencyCode();
-				int lastIndex = offset + limit;
-				for(int index = offset; index < transactionDTOs.size() && index < lastIndex; index++) {
-					TransactionDTO transactionDTO = transactionDTOs.get(index);
-					Transaction transaction = transactionMapper.map(transactionDTO);
-					transaction.getAmount().setCurrency(currency);
-					transactionList.add(transaction);
-				}
-				transactions.setTotalRecords(transactionDTOs.size());
-			} else {
-				transactionList = Collections.emptyList();
-				transactions.setTotalRecords(0);
-			}
-			transactions.setTransactions(transactionList);
+			AccountDTO accountDTO  = accountStore.getAccount(accountId);
+			List<TransactionDTO> transactionDTOs  = transactionStore.getTransactions(accountId);
+			Transactions transactions = getTransactions(accountDTO, transactionDTOs, offsetParam, limitParam);
 			return transactions;
 		} finally {
 			accountLock.unlock();
 		}
+	}
+
+	
+	/**
+	 * Creates the Transactions based on accountId and accountRequest
+	 * 
+	 * @param accountDTO
+	 * @param transactionDTOs
+	 * @param offsetParam
+	 * @param limitParam
+	 * @return
+	 */
+	protected Transactions  getTransactions(AccountDTO accountDTO, List<TransactionDTO> transactionDTOs, Integer offsetParam, Integer limitParam) {
+		Transactions transactions = new Transactions();
+		List<Transaction> transactionList = null;
+		int offset = (offsetParam != null) ? offsetParam : 0;
+		if(transactionDTOs != null && transactionDTOs.size() > offset) {
+			int limit = (limitParam != null) ? limitParam : (transactionDTOs.size() - offset);
+			transactionList = new ArrayList<Transaction>(limit);
+			String currency = accountDTO.getCurrency().getCurrencyCode();
+			int lastIndex = offset + limit;
+			for(int index = offset; index < transactionDTOs.size() && index < lastIndex; index++) {
+				TransactionDTO transactionDTO = transactionDTOs.get(index);
+				Transaction transaction = transactionMapper.map(transactionDTO);
+				transaction.getAmount().setCurrency(currency);
+				transactionList.add(transaction);
+			}
+			transactions.setTotalRecords(transactionDTOs.size());
+		} else {
+			transactionList = Collections.emptyList();
+			transactions.setTotalRecords(0);
+		}
+		transactions.setTransactions(transactionList);
+		return transactions;
 	}
 }

@@ -53,48 +53,84 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
 		Lock accountLock = lockManager.writeLock(accountId);
 		try {
 			accountLock.lock();
-			TransactionResponse transactionResponse;
 			AccountDTO accountDTO = accountStore.getAccount(accountId);
-			TransactionDTO transactionDTO = new TransactionDTO();
-			transactionDTO.setAmount(amountMapper.map(amount));
-			transactionDTO.setTransactionDate(OffsetDateTime.now());
-			transactionDTO.setId(transactionStore.generateId());
-			transactionDTO.setStatus(Transaction.StatusEnum.SUCCESSFUL.name());
-			transactionDTO.setType(type.name());
-			double newBalanceValue = accountDTO.getBalance().getValue();
-			switch (type) {
-			case DEPOSITE:
-				newBalanceValue += transactionDTO.getAmount().getValue();
-				break;
-			case WITHDRAW:
-				newBalanceValue -= transactionDTO.getAmount().getValue();
-				break;
-			default:
-			}
-			AmountDTO amountDTO = accountDTO.getBalance();
-			amountDTO.setValue(newBalanceValue);
-			
-	
-			List<TransactionDTO> transactionDTOs = transactionStore.getTransactions(accountId);
-			transactionDTOs.add(transactionDTO);
-			if(tallyTransactionAndBalanceService.execute(accountDTO, transactionDTOs)) {
-				accountStore.updateAccount(accountDTO);
-				transactionStore.addTransaction(accountId, transactionDTO);
-			} else {
-				throw new DataIntegrityException("New balance of account does not tally with the transactions.");
-			}
-			
-			transactionResponse = new TransactionResponse();
-			Balance newBalance = new Balance();
-			Amount newBalanceAmount = amountMapper.map(amountDTO);
-			newBalanceAmount.setCurrency(accountDTO.getCurrency().getCurrencyCode());
-			newBalance.setAmount(newBalanceAmount);
-			newBalance.setTimestamp(OffsetDateTime.now());
-			transactionResponse.setBalance(newBalance);
-			transactionResponse.setTransaction(transactionMapper.map(transactionDTO));
+			TransactionDTO transactionDTO = createTransactionDTO(amount, type);
+			calculateNewBalance(accountDTO, transactionDTO);
+			validateAndUpdate(accountDTO, transactionDTO);
+			TransactionResponse transactionResponse = createTransactionResponse(accountDTO, transactionDTO);
 			return transactionResponse;
 		} finally {
 			accountLock.unlock();
 		}
+	}
+	
+	/**
+	 * Create the transaction response containing new balance and transaction
+	 * @param accountDTO
+	 * @param transactionDTO
+	 * @return
+	 */
+	protected TransactionResponse createTransactionResponse(AccountDTO accountDTO, TransactionDTO transactionDTO) {
+		TransactionResponse transactionResponse = new TransactionResponse();
+		Balance newBalance = new Balance();
+		Amount newBalanceAmount = amountMapper.map(accountDTO.getBalance());
+		newBalanceAmount.setCurrency(accountDTO.getCurrency().getCurrencyCode());
+		newBalance.setAmount(newBalanceAmount);
+		newBalance.setTimestamp(OffsetDateTime.now());
+		transactionResponse.setBalance(newBalance);
+		transactionResponse.setTransaction(transactionMapper.map(transactionDTO));
+		return transactionResponse;
+	}
+	
+	/**
+	 * Validate and update the acount and transactions
+	 * @param accountDTO
+	 * @param transactionDTO
+	 */
+	protected void validateAndUpdate(AccountDTO accountDTO, TransactionDTO transactionDTO) {
+		List<TransactionDTO> transactionDTOs = transactionStore.getTransactions(accountDTO.getId());
+		transactionDTOs.add(transactionDTO);
+		if(tallyTransactionAndBalanceService.execute(accountDTO, transactionDTOs)) {
+			accountStore.updateAccount(accountDTO);
+			transactionStore.addTransaction(accountDTO.getId(), transactionDTO);
+		} else {
+			throw new DataIntegrityException("New balance of account does not tally with the transactions.");
+		}
+	}
+	
+	/**
+	 * Calculates the new balance based on amount and type
+	 * @param accountDTO
+	 * @param transactionDTO
+	 */
+	protected void calculateNewBalance(AccountDTO accountDTO, TransactionDTO transactionDTO) {
+		double newBalanceValue = accountDTO.getBalance().getValue();
+		switch (transactionDTO.getType()) {
+		case "DEPOSITE":
+			newBalanceValue += transactionDTO.getAmount().getValue();
+			break;
+		case "WITHDRAW":
+			newBalanceValue -= transactionDTO.getAmount().getValue();
+			break;
+		default:
+		}
+		AmountDTO amountDTO = accountDTO.getBalance();
+		amountDTO.setValue(newBalanceValue);
+	}
+	
+	/**
+	 * Creates the new TransactionDTO based on amount and type
+	 * @param amount
+	 * @param type
+	 * @return
+	 */
+	protected TransactionDTO createTransactionDTO(Amount amount, TypeEnum type) {
+		TransactionDTO transactionDTO = new TransactionDTO();
+		transactionDTO.setAmount(amountMapper.map(amount));
+		transactionDTO.setTransactionDate(OffsetDateTime.now());
+		transactionDTO.setId(transactionStore.generateId());
+		transactionDTO.setStatus(Transaction.StatusEnum.SUCCESSFUL.name());
+		transactionDTO.setType(type.name());
+		return transactionDTO;
 	}
 }

@@ -5,6 +5,12 @@ import java.util.Comparator;
 import org.ptw.banking.account.saving.persistance.dto.TransactionDTO;
 import org.springframework.stereotype.Component;
 
+/**
+ * Comparator for sorting transactions by transaction date and id.
+ * 
+ * @author pawan
+ *
+ */
 @Component
 public class TransactionDTOComparator implements Comparator<TransactionDTO> {
 

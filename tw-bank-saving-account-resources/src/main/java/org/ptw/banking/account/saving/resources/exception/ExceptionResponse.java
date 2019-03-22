@@ -2,6 +2,11 @@ package org.ptw.banking.account.saving.resources.exception;
 
 import java.util.Date;
 
+/**
+ * REST response in case of exception.
+ * @author pawan
+ *
+ */
 public class ExceptionResponse {
 	private Date timestamp;
 	private String message;
