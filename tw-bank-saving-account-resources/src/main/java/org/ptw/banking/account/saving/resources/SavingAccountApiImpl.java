@@ -52,8 +52,8 @@ public class SavingAccountApiImpl implements SavingAccountApi {
     }
 	
 	@Override
-	public ResponseEntity<TransactionResponse> deposite(@PathVariable("accountId") String accountId, @RequestBody Amount amount) {
-		TransactionResponse transactionResponse = accountTransactionService.execute(accountId, amount, TypeEnum.DEPOSITE);
+	public ResponseEntity<TransactionResponse> deposit(@PathVariable("accountId") String accountId, @RequestBody Amount amount) {
+		TransactionResponse transactionResponse = accountTransactionService.execute(accountId, amount, TypeEnum.DEPOSIT);
 		return new ResponseEntity<>(transactionResponse, HttpStatus.OK);
     }
 	

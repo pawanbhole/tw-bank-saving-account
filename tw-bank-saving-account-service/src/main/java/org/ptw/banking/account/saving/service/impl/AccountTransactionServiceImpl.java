@@ -106,7 +106,7 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
 	protected void calculateNewBalance(AccountDTO accountDTO, TransactionDTO transactionDTO) {
 		double newBalanceValue = accountDTO.getBalance().getValue();
 		switch (transactionDTO.getType()) {
-		case "DEPOSITE":
+		case "DEPOSIT":
 			newBalanceValue += transactionDTO.getAmount().getValue();
 			break;
 		case "WITHDRAW":

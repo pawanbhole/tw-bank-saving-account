@@ -17,7 +17,7 @@ public class TallyTransactionAndBalanceServiceImpl implements TallyTransactionAn
 		for(int index = 0; index < transactionDTOs.size() ; index++) {
 			TransactionDTO transactionDTO = transactionDTOs.get(index);
 			switch (transactionDTO.getType()) {
-			case "DEPOSITE":
+			case "DEPOSIT":
 				expectedBalance += transactionDTO.getAmount().getValue();
 				break;
 			case "WITHDRAW":

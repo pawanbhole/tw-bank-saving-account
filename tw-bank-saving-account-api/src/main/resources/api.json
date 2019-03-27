@@ -124,7 +124,7 @@
               "application/json": {
                 "transactions": [
                   {
-                    "type": "DEPOSITE",
+                    "type": "DEPOSIT",
                     "amount": {
                       "value": 100.5,
                       "currency": "USD"
@@ -150,13 +150,13 @@
         }
       }
     },
-    "/saving-account/{accountId}/deposite": {
-      "x-summary": "Account deposite operation",
-      "x-description": "Account POST deposite operation",
+    "/saving-account/{accountId}/deposit": {
+      "x-summary": "Account deposit operation",
+      "x-description": "Account POST deposit operation",
       "post": {
-        "summary": "Deposite the amount in account",
-        "description": "Deposite the amount in account",
-        "operationId": "deposite",
+        "summary": "Deposit the amount in account",
+        "description": "Deposit the amount in account",
+        "operationId": "deposit",
         "parameters": [
           {
             "name": "accountId",
@@ -271,7 +271,7 @@
         "type": {
           "type": "string",
           "enum": [
-            "DEPOSITE",
+            "DEPOSIT",
             "WITHDRAW"
           ]
         },

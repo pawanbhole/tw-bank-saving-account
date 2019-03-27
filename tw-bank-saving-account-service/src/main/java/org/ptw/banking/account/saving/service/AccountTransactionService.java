@@ -5,7 +5,7 @@ import org.ptw.banking.account.saving.service.model.Transaction.TypeEnum;
 import org.ptw.banking.account.saving.service.model.TransactionResponse;
 
 /**
- * Service to handle Account transactions such as DEPOSITE and WITHDRAW
+ * Service to handle Account transactions such as DEPOSIT and WITHDRAW
  * 
  * @author pawan
  *
@@ -13,10 +13,10 @@ import org.ptw.banking.account.saving.service.model.TransactionResponse;
 public interface AccountTransactionService {
 
 	/**
-	 * Performs the Account transactions such as DEPOSITE and WITHDRAW based on type.
-	 * @param accountId Id of the account to be DEPOSITED or WITHDRAWEN
+	 * Performs the Account transactions such as DEPOSIT and WITHDRAW based on type.
+	 * @param accountId Id of the account to be DEPOSITD or WITHDRAWEN
 	 * @param amount
-	 * @param type Type fo transaction. e.g. DEPOSITE or WITHDRAW
+	 * @param type Type fo transaction. e.g. DEPOSIT or WITHDRAW
 	 * @return
 	 */
 	public TransactionResponse execute(String accountId, Amount amount, TypeEnum type);

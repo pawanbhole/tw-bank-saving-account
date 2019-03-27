@@ -158,7 +158,7 @@ Content-Type: application/json
     },
     "transaction": {
         "id": "T00001",
-        "type": "DEPOSITE",
+        "type": "DEPOSIT",
         "status": "SUCCESSFUL",
         "reasonCode": null,
         "amount": {
